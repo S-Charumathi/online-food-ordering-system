@@ -1,29 +1,23 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
-from time import sleep
-import os
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.options import Options
 
-# Path to chromedriver
-chromedriver_path = r"C:\Users\CHARUARJUN\Documents\Selenium_tests\chromedriver.exe"
-service = Service(chromedriver_path)
+# Chrome options for headless mode
+chrome_options = Options()
+chrome_options.add_argument("--headless")
+chrome_options.add_argument("--no-sandbox")
+chrome_options.add_argument("--disable-dev-shm-usage")
 
-# Start Chrome
-driver = webdriver.Chrome(service=service)
+# Setup Chrome driver
+service = Service(ChromeDriverManager().install())
+driver = webdriver.Chrome(service=service, options=chrome_options)
 
-# Open the local login page
-login_html_path = r"C:\Users\CHARUARJUN\Documents\Selenium_tests\FoodApp\login.html"
-driver.get(f"file:///{login_html_path}")
+# Open a test page
+driver.get("https://www.google.com")
 
-sleep(1)
+# Example action
+driver.find_element(By.NAME, "q").send_keys("Selenium")
 
-# Fill username and password
-driver.find_element(By.ID, "username").send_keys("user1")
-driver.find_element(By.ID, "password").send_keys("1234")
-
-# Click login button
-driver.find_element(By.ID, "loginBtn").click()
-
-#sleep(2)  # wait to see result
-input("Press Enter to close the browser...")
 driver.quit()
